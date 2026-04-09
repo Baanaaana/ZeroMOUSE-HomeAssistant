@@ -30,9 +30,11 @@ class ZeromouseConfigFlow(ConfigFlow, domain=DOMAIN):
                     user_input[CONF_DEVICE_ID],
                     user_input[CONF_REFRESH_TOKEN],
                 )
-            except ZeromouseAuthError:
+            except ZeromouseAuthError as err:
+                _LOGGER.error("ZeroMOUSE auth failed: %s", err)
                 errors["base"] = "invalid_auth"
-            except ZeromouseApiError:
+            except ZeromouseApiError as err:
+                _LOGGER.error("ZeroMOUSE API connection failed: %s", err)
                 errors["base"] = "cannot_connect"
             except Exception:
                 _LOGGER.exception("Unexpected error during config validation")
