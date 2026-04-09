@@ -1,0 +1,10 @@
+{
+  "domain": "zeromouse",
+  "name": "ZeroMOUSE",
+  "codeowners": ["@renevanthoff"],
+  "config_flow": true,
+  "documentation": "https://github.com/renevanthoff/zeromouse",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/renevanthoff/zeromouse/issues",
+  "version": "1.0.0"
+}

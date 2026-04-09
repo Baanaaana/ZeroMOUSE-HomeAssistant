@@ -1,0 +1,24 @@
+# Sensitive data — tokens, credentials, captures
+config.yaml
+captured-credentials.md
+zeromouse-captures.json
+
+# Firmware binary dump
+factory_app.bin
+
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# macOS
+.DS_Store
+
+# IDE / tool config
+.vscode/
+.idea/
+.claude/

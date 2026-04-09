@@ -1,0 +1,50 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect your ZeroMOUSE",
+        "description": "Enter your device ID and refresh token. See the documentation for how to capture the refresh token using mitmproxy.",
+        "data": {
+          "device_id": "Device ID",
+          "refresh_token": "Refresh Token",
+          "device_name": "Device Name"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Re-authenticate ZeroMOUSE",
+        "description": "Your refresh token has expired. Please capture a new one via mitmproxy.",
+        "data": {
+          "refresh_token": "New Refresh Token"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Invalid refresh token. Please re-capture via mitmproxy.",
+      "cannot_connect": "Cannot connect to ZeroMOUSE cloud API.",
+      "unknown": "An unexpected error occurred."
+    },
+    "abort": {
+      "already_configured": "This ZeroMOUSE device is already configured."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "event_count": { "name": "Event count" },
+      "pir_triggers": { "name": "PIR triggers" },
+      "wifi_rssi": { "name": "WiFi signal" },
+      "boot_count": { "name": "Boot count" },
+      "firmware": { "name": "Firmware version" },
+      "undecidable_mode": { "name": "Undecidable mode" },
+      "block_count": { "name": "Block count" },
+      "unblock_count": { "name": "Unblock count" },
+      "last_event_type": { "name": "Last event type" },
+      "last_event_classification": { "name": "Last event classification" },
+      "last_event_time": { "name": "Last event time" },
+      "last_event_image": { "name": "Last event image" }
+    },
+    "binary_sensor": {
+      "flap_blocked": { "name": "Flap blocked" },
+      "blocking_enabled": { "name": "Prey blocking enabled" }
+    }
+  }
+}
