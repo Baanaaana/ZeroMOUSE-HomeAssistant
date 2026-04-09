@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any
 
 from homeassistant.components.sensor import (
@@ -125,14 +126,9 @@ EVENT_SENSORS: tuple[ZeromouseEventSensorDescription, ...] = (
         key="last_event_time",
         translation_key="last_event_time",
         device_class=SensorDeviceClass.TIMESTAMP,
-        value_fn=lambda d: d.get("time") if d else None,
-    ),
-    ZeromouseEventSensorDescription(
-        key="last_event_image",
-        translation_key="last_event_image",
-        icon="mdi:camera",
-        entity_category=EntityCategory.DIAGNOSTIC,
-        value_fn=lambda d: d.get("image_url") if d else None,
+        value_fn=lambda d: (
+            datetime.fromisoformat(d["time"]) if d and d.get("time") else None
+        ),
     ),
 )
 

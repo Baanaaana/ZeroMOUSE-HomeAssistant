@@ -39,8 +39,10 @@
       "unblock_count": { "name": "Unblock count" },
       "last_event_type": { "name": "Last event type" },
       "last_event_classification": { "name": "Last event classification" },
-      "last_event_time": { "name": "Last event time" },
-      "last_event_image": { "name": "Last event image" }
+      "last_event_time": { "name": "Last event time" }
+    },
+    "image": {
+      "event_image": { "name": "Last event" }
     },
     "binary_sensor": {
       "flap_blocked": { "name": "Flap blocked" },

@@ -39,4 +39,4 @@ DATA_SHADOW_COORDINATOR = "shadow_coordinator"
 DATA_EVENT_COORDINATOR = "event_coordinator"
 
 # Platforms
-PLATFORMS = ["sensor", "binary_sensor"]
+PLATFORMS = ["sensor", "binary_sensor", "image"]
