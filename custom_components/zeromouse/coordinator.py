@@ -72,7 +72,12 @@ class ZeromouseEventCoordinator(DataUpdateCoordinator[dict | None]):
         if items:
             title_idx = ev.get("titleImageIndex", 0) or 0
             idx = title_idx if title_idx < len(items) else 0
-            image_url = self._client.get_image_url(items[idx]["filePath"])
+            file_path = items[idx]["filePath"]
+            image_url = self._client.get_image_url(file_path)
+            if image_url:
+                _LOGGER.debug("Event image URL generated for %s", file_path)
+            else:
+                _LOGGER.warning("Failed to generate image URL for %s (missing AWS credentials?)", file_path)
 
         return {
             "event_id": ev["eventID"],
