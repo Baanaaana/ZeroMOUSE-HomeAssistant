@@ -100,7 +100,7 @@ class CognitoAuth:
                     raise ZeromouseAuthError(
                         f"Cognito auth failed (HTTP {resp.status}): {body[:200]}"
                     )
-                data = await resp.json()
+                data = await resp.json(content_type=None)
         except aiohttp.ClientError as err:
             raise ZeromouseApiError(f"Cognito request failed: {err}") from err
 
@@ -140,7 +140,7 @@ class ShadowClient:
                     raise ZeromouseApiError(
                         f"Shadow API error (HTTP {resp.status}): {body[:200]}"
                     )
-                return await resp.json()
+                return await resp.json(content_type=None)
         except aiohttp.ClientError as err:
             raise ZeromouseApiError(f"Shadow API request failed: {err}") from err
 
@@ -185,7 +185,7 @@ class EventClient:
                     raise ZeromouseApiError(
                         f"GraphQL error (HTTP {resp.status}): {body[:200]}"
                     )
-                data = await resp.json()
+                data = await resp.json(content_type=None)
         except aiohttp.ClientError as err:
             raise ZeromouseApiError(f"GraphQL request failed: {err}") from err
 
