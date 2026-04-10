@@ -108,6 +108,7 @@ automation:
         value_template: "{{ trigger.to_state.state not in ['unknown', 'unavailable'] }}"
     action:
       - variables:
+          cat_name: "Cat"  # Change to your cat's name
           snapshot_filename: zeromouse_{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg
       - action: image.snapshot
         target:
@@ -126,11 +127,11 @@ automation:
             {% else %}ZeroMOUSE{% endif %}
           message: >
             {% set messages = {
-              'prey': 'Your cat tried to bring in prey — entry was blocked!',
-              'clean': 'Your cat entered without prey.',
-              'undecidable': 'Detection was uncertain — check the image.',
-              'out': 'Your cat went outside.',
-              'late': 'Classification arrived too late — cat already through.',
+              'prey': cat_name ~ ' tried to bring in prey — entry was blocked!',
+              'clean': cat_name ~ ' entered without prey.',
+              'undecidable': 'Uncertain detection for ' ~ cat_name ~ ' — check the image.',
+              'out': cat_name ~ ' went outside.',
+              'late': 'Classification arrived too late — ' ~ cat_name ~ ' already through.',
               'test': 'Test event triggered.',
             } %}
             {{ messages.get(classification, classification ~ ' event detected') }}
