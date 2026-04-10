@@ -2,9 +2,9 @@
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="zeromouse_logo_light.png">
-    <source media="(prefers-color-scheme: light)" srcset="zeromouse_logo_dark.png">
-    <img src="zeromouse_logo_dark.png" alt="ZeroMOUSE logo" width="200">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Baanaaana/zeromouse/main/zeromouse_logo_light.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/Baanaaana/zeromouse/main/zeromouse_logo_dark.png">
+    <img src="https://raw.githubusercontent.com/Baanaaana/zeromouse/main/zeromouse_logo_dark.png" alt="ZeroMOUSE logo" width="200">
   </picture>
 </p>
 
