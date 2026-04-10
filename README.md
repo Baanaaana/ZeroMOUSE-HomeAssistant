@@ -10,6 +10,25 @@
 
 A custom [Home Assistant](https://www.home-assistant.io/) integration for the **ZeroMOUSE** smart pet door. Monitor your cat flap status, detection events, and view captured images — all from your Home Assistant dashboard.
 
+## Installation
+
+### HACS (recommended)
+
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Baanaaana&repository=ZeroMOUSE-HomeAssistant&category=integration)
+
+Or manually:
+
+1. Open HACS in Home Assistant
+2. Go to **Integrations** → click the **three-dot menu** → **Custom repositories**
+3. Add this repository URL with category **Integration**
+4. Search for **ZeroMOUSE** and install
+5. Restart Home Assistant
+
+### Manual
+
+1. Copy the `custom_components/zeromouse` folder to your Home Assistant `config/custom_components/` directory
+2. Restart Home Assistant
+
 ## Features
 
 - **Email/password login** — use your existing ZeroMOUSE account, no tokens or technical setup required
@@ -37,25 +56,6 @@ A custom [Home Assistant](https://www.home-assistant.io/) integration for the **
 | Boot count | Sensor | Device restart count |
 | Firmware version | Sensor | Current firmware version |
 | Last event | Image | Photo from the latest detection event |
-
-## Installation
-
-### HACS (recommended)
-
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Baanaaana&repository=ZeroMOUSE-HomeAssistant&category=integration)
-
-Or manually:
-
-1. Open HACS in Home Assistant
-2. Go to **Integrations** → click the **three-dot menu** → **Custom repositories**
-3. Add this repository URL with category **Integration**
-4. Search for **ZeroMOUSE** and install
-5. Restart Home Assistant
-
-### Manual
-
-1. Copy the `custom_components/zeromouse` folder to your Home Assistant `config/custom_components/` directory
-2. Restart Home Assistant
 
 ## Setup
 
