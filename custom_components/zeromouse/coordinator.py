@@ -35,7 +35,9 @@ class ZeromouseShadowCoordinator(DataUpdateCoordinator[dict]):
         except ZeromouseApiError as err:
             raise UpdateFailed(f"Shadow API error: {err}") from err
 
-        return shadow.get("state", {}).get("reported", {})
+        reported = shadow.get("state", {}).get("reported", {})
+        reported["_connectivity"] = shadow.get("connectivity", {})
+        return reported
 
 
 class ZeromouseEventCoordinator(DataUpdateCoordinator[dict | None]):

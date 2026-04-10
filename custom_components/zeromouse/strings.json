@@ -53,7 +53,8 @@
     },
     "binary_sensor": {
       "flap_blocked": { "name": "Flap blocked" },
-      "blocking_enabled": { "name": "Prey blocking enabled" }
+      "blocking_enabled": { "name": "Prey blocking enabled" },
+      "device_connected": { "name": "Device connected" }
     }
   }
 }

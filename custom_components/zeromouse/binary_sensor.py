@@ -11,6 +11,7 @@ from homeassistant.components.binary_sensor import (
     BinarySensorEntityDescription,
 )
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
@@ -37,6 +38,13 @@ BINARY_SENSORS: tuple[ZeromouseBinarySensorDescription, ...] = (
         translation_key="blocking_enabled",
         icon="mdi:shield-lock",
         value_fn=lambda d: bool(d.get("rfid", {}).get("blockEnabled", 0)),
+    ),
+    ZeromouseBinarySensorDescription(
+        key="device_connected",
+        translation_key="device_connected",
+        device_class=BinarySensorDeviceClass.CONNECTIVITY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda d: d.get("_connectivity", {}).get("connected"),
     ),
 )
 
