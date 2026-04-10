@@ -1,7 +1,11 @@
 # ZeroMOUSE Home Assistant Integration
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Baanaaana/zeromouse/main/zeromouse_logo.svg" alt="ZeroMOUSE logo" width="200">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="zeromouse_logo_light.png">
+    <source media="(prefers-color-scheme: light)" srcset="zeromouse_logo_dark.png">
+    <img src="zeromouse_logo_dark.png" alt="ZeroMOUSE logo" width="200">
+  </picture>
 </p>
 
 > **Disclaimer:** This is an **unofficial**, community-developed integration. It is **not** created, endorsed, or supported by ZeroMOUSE or its parent company. The ZeroMOUSE name and logo are trademarks of their respective owners and are used here solely for identification purposes. This project has no affiliation with ZeroMOUSE.
