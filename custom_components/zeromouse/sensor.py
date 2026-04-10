@@ -107,6 +107,43 @@ SHADOW_SENSORS: tuple[ZeromouseShadowSensorDescription, ...] = (
         state_class=SensorStateClass.TOTAL_INCREASING,
         value_fn=lambda d: d.get("rfid", {}).get("unblockCount"),
     ),
+    ZeromouseShadowSensorDescription(
+        key="last_reset_reason",
+        translation_key="last_reset_reason",
+        icon="mdi:information-outline",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda d: d.get("system", {}).get("metricLastResetReason"),
+    ),
+    ZeromouseShadowSensorDescription(
+        key="mqtt_error_count",
+        translation_key="mqtt_error_count",
+        icon="mdi:alert-circle-outline",
+        state_class=SensorStateClass.TOTAL_INCREASING,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda d: d.get("system", {}).get("metricMQTTErrorCount"),
+    ),
+    ZeromouseShadowSensorDescription(
+        key="camera_status",
+        translation_key="camera_status",
+        icon="mdi:camera",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda d: (
+            "OK" if d.get("camera", {}).get("cameraStatus") == 0 else
+            f"Error ({d.get('camera', {}).get('cameraStatus')})"
+            if d.get("camera", {}).get("cameraStatus") is not None else None
+        ),
+    ),
+    ZeromouseShadowSensorDescription(
+        key="ir_sensor_status",
+        translation_key="ir_sensor_status",
+        icon="mdi:eye-check",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda d: (
+            "OK" if d.get("proximity", {}).get("irSensorStatus") == 0 else
+            f"Error ({d.get('proximity', {}).get('irSensorStatus')})"
+            if d.get("proximity", {}).get("irSensorStatus") is not None else None
+        ),
+    ),
 )
 
 EVENT_SENSORS: tuple[ZeromouseEventSensorDescription, ...] = (

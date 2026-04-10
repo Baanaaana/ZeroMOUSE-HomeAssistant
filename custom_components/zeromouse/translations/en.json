@@ -46,7 +46,11 @@
       "unblock_count": { "name": "Unblock count" },
       "last_event_type": { "name": "Last event type" },
       "last_event_classification": { "name": "Last event classification" },
-      "last_event_time": { "name": "Last event time" }
+      "last_event_time": { "name": "Last event time" },
+      "last_reset_reason": { "name": "Last reset reason" },
+      "mqtt_error_count": { "name": "MQTT errors" },
+      "camera_status": { "name": "Camera status" },
+      "ir_sensor_status": { "name": "IR sensor status" }
     },
     "image": {
       "event_image": { "name": "Last event" }

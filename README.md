@@ -33,7 +33,7 @@ Or manually:
 
 - **Email/password login** — use your existing ZeroMOUSE account, no tokens or technical setup required
 - **Auto-discovery** — your devices are found automatically after login
-- **Live status** — flap lock state, prey blocking, event counts, WiFi signal
+- **Live status** — flap lock state, prey blocking, event counts, WiFi signal, device connectivity
 - **Detection events** — last event type, classification (prey/clean/test), timestamp
 - **Event images** — latest detection photo displayed as a native HA image entity
 - **HACS compatible** — easy install and updates
@@ -44,6 +44,7 @@ Or manually:
 |--------|------|-------------|
 | Flap blocked | Binary sensor | Whether the flap is currently locked |
 | Prey blocking enabled | Binary sensor | Whether prey blocking is active |
+| Device connected | Binary sensor | Whether the device is online |
 | Event count | Sensor | Total detection events |
 | PIR triggers | Sensor | Total PIR motion triggers |
 | Block count | Sensor | Times the flap was blocked |
@@ -55,6 +56,10 @@ Or manually:
 | WiFi signal | Sensor | Device WiFi RSSI (dBm) |
 | Boot count | Sensor | Device restart count |
 | Firmware version | Sensor | Current firmware version |
+| Last reset reason | Sensor | Why the device last rebooted (SW, WDT, etc.) |
+| MQTT errors | Sensor | MQTT error count |
+| Camera status | Sensor | Camera health (OK or Error) |
+| IR sensor status | Sensor | IR sensor health (OK or Error) |
 | Last event | Image | Photo from the latest detection event |
 
 ## Setup
