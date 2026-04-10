@@ -1,0 +1,41 @@
+automation:
+  - alias: ZeroMOUSE detectie melding
+    trigger:
+      - platform: state
+        entity_id: sensor.zeromouse_last_event_type
+    condition:
+      - condition: template
+        value_template: "{{ trigger.to_state.state not in ['unknown', 'unavailable'] }}"
+    action:
+      - variables:
+          cat_name: "Kat"  # Verander naar de naam van je kat
+          snapshot_filename: zeromouse_{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg
+      - action: image.snapshot
+        target:
+          entity_id: image.zeromouse_last_event
+        data:
+          filename: /config/www/zeromouse/{{ snapshot_filename }}
+      - delay:
+          milliseconds: 500
+      - variables:
+          classification: "{{ states('sensor.zeromouse_last_event_classification') }}"
+      - action: notify.mobile_app_<jouw_telefoon>
+        data:
+          title: >
+            {% if classification == 'prey' %}⚠️ Prooi gedetecteerd!
+            {% elif classification == 'undecidable' %}⚠️ Onzekere detectie
+            {% else %}ZeroMOUSE{% endif %}
+          message: >
+            {% set messages = {
+              'prey': cat_name ~ ' probeerde een prooi mee naar binnen te nemen — toegang geblokkeerd!',
+              'clean': cat_name ~ ' is zonder prooi binnengekomen.',
+              'undecidable': 'Onzekere detectie voor ' ~ cat_name ~ ' — controleer de foto.',
+              'out': cat_name ~ ' is naar buiten gegaan.',
+              'late': 'Classificatie te laat — ' ~ cat_name ~ ' was al binnen.',
+              'test': 'Testgebeurtenis uitgevoerd.',
+            } %}
+            {{ messages.get(classification, classification ~ ' gebeurtenis gedetecteerd') }}
+          data:
+            image: /local/zeromouse/{{ snapshot_filename }}
+            push:
+              interruption-level: "{{ 'critical' if classification in ['prey', 'undecidable'] else 'active' }}"
