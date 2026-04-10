@@ -117,14 +117,28 @@ automation:
           filename: /config/www/zeromouse/{{ snapshot_filename }}
       - delay:
           milliseconds: 500
+      - variables:
+          classification: "{{ states('sensor.zeromouse_last_event_classification') }}"
       - action: notify.mobile_app_<your_phone>
         data:
-          title: "ZeroMOUSE"
-          message: "{{ states('sensor.zeromouse_last_event_classification') | title }} event detected"
+          title: >
+            {% if classification == 'prey' %}⚠️ Prey detected!
+            {% elif classification == 'undecidable' %}⚠️ Uncertain detection
+            {% else %}ZeroMOUSE{% endif %}
+          message: >
+            {% set messages = {
+              'prey': 'Your cat tried to bring in prey — entry was blocked!',
+              'clean': 'Your cat entered without prey.',
+              'undecidable': 'Detection was uncertain — check the image.',
+              'out': 'Your cat went outside.',
+              'late': 'Classification arrived too late — cat already through.',
+              'test': 'Test event triggered.',
+            } %}
+            {{ messages.get(classification, classification ~ ' event detected') }}
           data:
             image: /local/zeromouse/{{ snapshot_filename }}
             push:
-              interruption-level: critical
+              interruption-level: "{{ 'critical' if classification in ['prey', 'undecidable'] else 'active' }}"
 ```
 
 Replace `mobile_app_<your_phone>` with your device's notify service name.
