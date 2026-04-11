@@ -70,28 +70,73 @@ Or manually:
 
 ## Dashboard Card
 
-Add this YAML to your dashboard for a ZeroMOUSE overview card:
+Add this YAML to your dashboard for a ZeroMOUSE overview card (Edit Dashboard → Add Card → Manual):
 
 ```yaml
 type: vertical-stack
 cards:
+  - type: custom:mushroom-title-card
+    title: ZeroMOUSE
+    subtitle: >
+      {{ states('sensor.zeromouse_last_event_classification') | title }}
+      — {{ relative_time(states.sensor.zeromouse_last_event_time.state | as_datetime) }} ago
   - type: picture-entity
     entity: image.zeromouse_last_event
     show_state: false
     show_name: false
+    aspect_ratio: 4x3
+  - type: horizontal-stack
+    cards:
+      - type: tile
+        entity: binary_sensor.zeromouse_flap_blocked
+        name: Flap
+        color: red
+        vertical: true
+      - type: tile
+        entity: binary_sensor.zeromouse_prey_blocking_enabled
+        name: Blocking
+        color: green
+        vertical: true
+      - type: tile
+        entity: binary_sensor.zeromouse_device_connected
+        name: Device
+        color: blue
+        vertical: true
   - type: entities
     entities:
-      - entity: sensor.zeromouse_last_event_classification
-        name: Classification
       - entity: sensor.zeromouse_last_event_type
         name: Event Type
+        icon: mdi:cat
+      - entity: sensor.zeromouse_last_event_classification
+        name: Classification
+        icon: mdi:eye-check
       - entity: sensor.zeromouse_last_event_time
-        name: Event Time
-      - entity: binary_sensor.zeromouse_flap_blocked
-        name: Flap Blocked
-      - entity: binary_sensor.zeromouse_prey_blocking_enabled
-        name: Prey Blocking
+        name: Last Event
+        icon: mdi:clock-outline
+      - type: divider
+      - entity: sensor.zeromouse_event_count
+        name: Total Events
+      - entity: sensor.zeromouse_pir_triggers
+        name: PIR Triggers
+      - entity: sensor.zeromouse_block_count
+        name: Times Blocked
+      - entity: sensor.zeromouse_unblock_count
+        name: Times Unblocked
+      - type: divider
+      - entity: sensor.zeromouse_wifi_signal
+        name: WiFi Signal
+      - entity: sensor.zeromouse_firmware_version
+        name: Firmware
 ```
+
+> **Note:** The title card uses [mushroom-cards](https://github.com/piitaya/lovelace-mushroom). If you don't have mushroom installed, replace the `custom:mushroom-title-card` with a regular `markdown` card:
+> ```yaml
+> - type: markdown
+>   content: |
+>     ## ZeroMOUSE
+>     {{ states('sensor.zeromouse_last_event_classification') | title }}
+>     — {{ relative_time(states.sensor.zeromouse_last_event_time.state | as_datetime) }} ago
+> ```
 
 ## Mobile Notification with Image
 
