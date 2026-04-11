@@ -2,6 +2,7 @@
 config.yaml
 captured-credentials.md
 zeromouse-captures.json
+CLAUDE.md
 
 # Firmware binary dump
 factory_app.bin

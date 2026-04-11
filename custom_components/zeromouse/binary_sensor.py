@@ -31,7 +31,7 @@ BINARY_SENSORS: tuple[ZeromouseBinarySensorDescription, ...] = (
         key="flap_blocked",
         translation_key="flap_blocked",
         device_class=BinarySensorDeviceClass.LOCK,
-        value_fn=lambda d: bool(d.get("rfid", {}).get("blockState", 0) & 1),
+        value_fn=lambda d: not bool(d.get("rfid", {}).get("blockState", 0) & 1),
     ),
     ZeromouseBinarySensorDescription(
         key="blocking_enabled",
