@@ -102,10 +102,7 @@ automation:
   - alias: ZeroMOUSE detection alert
     trigger:
       - platform: state
-        entity_id: sensor.zeromouse_last_event_type
-    condition:
-      - condition: template
-        value_template: "{{ trigger.to_state.state not in ['unknown', 'unavailable'] }}"
+        entity_id: sensor.zeromouse_last_event_time
     action:
       - variables:
           cat_name: "Cat"  # Change to your cat's name
