@@ -1,14 +1,9 @@
 # Changelog
 
-## [1.3.0] - 2026-04-11
-
-### Added
-- **Instant event updates** — AppSync WebSocket subscription replaces polling for detection events; updates arrive within 1-2 seconds instead of 60s
-- **Auto-reconnect** — WebSocket reconnects with exponential backoff if connection drops
-- **Keepalive monitoring** — detects stale connections and reconnects automatically
+## [1.2.1] - 2026-04-11
 
 ### Changed
-- Event polling interval increased to 5 minutes (fallback only — WebSocket handles real-time updates)
+- **Event polling interval** reduced to 30 seconds for faster event detection
 
 ## [1.2.0] - 2026-04-11
 

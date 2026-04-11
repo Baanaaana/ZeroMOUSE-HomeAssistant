@@ -19,16 +19,12 @@ SHADOW_API_URL = (
 GRAPHQL_URL = (
     "https://f36gc6o7jnewxe37dhn3fochza.appsync-api.eu-central-1.amazonaws.com/graphql"
 )
-APPSYNC_REALTIME_URL = (
-    "wss://f36gc6o7jnewxe37dhn3fochza.appsync-realtime-api.eu-central-1.amazonaws.com/graphql"
-)
-APPSYNC_HOST = "f36gc6o7jnewxe37dhn3fochza.appsync-api.eu-central-1.amazonaws.com"
 S3_BUCKET = "mbr-ptf-images-eu-central-1-dev"
 S3_REGION = "eu-central-1"
 
 # Polling intervals
 SHADOW_SCAN_INTERVAL = timedelta(seconds=10)
-EVENT_SCAN_INTERVAL = timedelta(seconds=300)  # 5 min fallback; WebSocket handles instant updates
+EVENT_SCAN_INTERVAL = timedelta(seconds=30)
 
 # Token refresh margin (seconds before expiry to trigger refresh)
 TOKEN_REFRESH_MARGIN = 60
@@ -41,7 +37,6 @@ CONF_DEVICE_NAME = "device_name"
 # hass.data keys
 DATA_SHADOW_COORDINATOR = "shadow_coordinator"
 DATA_EVENT_COORDINATOR = "event_coordinator"
-DATA_SUBSCRIPTION_MANAGER = "subscription_manager"
 
 # Platforms
 PLATFORMS = ["sensor", "binary_sensor", "image"]

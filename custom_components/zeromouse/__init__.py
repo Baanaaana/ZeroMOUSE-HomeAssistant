@@ -12,12 +12,10 @@ from .const import (
     CONF_REFRESH_TOKEN,
     DATA_EVENT_COORDINATOR,
     DATA_SHADOW_COORDINATOR,
-    DATA_SUBSCRIPTION_MANAGER,
     DOMAIN,
     PLATFORMS,
 )
 from .coordinator import ZeromouseEventCoordinator, ZeromouseShadowCoordinator
-from .subscription import AppSyncSubscriptionManager
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -43,18 +41,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     await shadow_coordinator.async_config_entry_first_refresh()
     await event_coordinator.async_config_entry_first_refresh()
 
-    # Start AppSync WebSocket for instant event updates
-    subscription_manager = AppSyncSubscriptionManager(
-        hass, session, auth, event_coordinator, shadow_coordinator, device_id
-    )
-    await subscription_manager.async_start()
-
-    # Store for platform setup and cleanup
+    # Store for platform setup
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][entry.entry_id] = {
         DATA_SHADOW_COORDINATOR: shadow_coordinator,
         DATA_EVENT_COORDINATOR: event_coordinator,
-        DATA_SUBSCRIPTION_MANAGER: subscription_manager,
     }
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
@@ -63,12 +54,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a ZeroMOUSE config entry."""
-    # Stop WebSocket subscription
-    data = hass.data[DOMAIN].get(entry.entry_id, {})
-    subscription_manager = data.get(DATA_SUBSCRIPTION_MANAGER)
-    if subscription_manager:
-        await subscription_manager.async_stop()
-
     unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
     if unload_ok:
         hass.data[DOMAIN].pop(entry.entry_id)
