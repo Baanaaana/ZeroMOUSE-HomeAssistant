@@ -80,11 +80,55 @@ cards:
     subtitle: >
       {{ states('sensor.zeromouse_last_event_classification') | title }}
       — {{ relative_time(states.sensor.zeromouse_last_event_time.state | as_datetime) }} ago
-  - type: picture-entity
-    entity: image.zeromouse_last_event
-    show_state: false
-    show_name: false
-    aspect_ratio: 4x3
+  - type: custom:swipe-card
+    parameters:
+      pagination:
+        type: bullets
+      loop: true
+      autoplay:
+        delay: 3000
+        disableOnInteraction: true
+    cards:
+      - type: picture-entity
+        entity: image.zeromouse_event_image_1
+        show_state: false
+        show_name: false
+        aspect_ratio: 4x3
+      - type: picture-entity
+        entity: image.zeromouse_event_image_2
+        show_state: false
+        show_name: false
+        aspect_ratio: 4x3
+      - type: picture-entity
+        entity: image.zeromouse_event_image_3
+        show_state: false
+        show_name: false
+        aspect_ratio: 4x3
+      - type: picture-entity
+        entity: image.zeromouse_event_image_4
+        show_state: false
+        show_name: false
+        aspect_ratio: 4x3
+      - type: picture-entity
+        entity: image.zeromouse_event_image_5
+        show_state: false
+        show_name: false
+        aspect_ratio: 4x3
+      - type: picture-entity
+        entity: image.zeromouse_event_image_6
+        show_state: false
+        show_name: false
+        aspect_ratio: 4x3
+      - type: picture-entity
+        entity: image.zeromouse_event_image_7
+        show_state: false
+        show_name: false
+        aspect_ratio: 4x3
+      - type: picture-entity
+        entity: image.zeromouse_event_image_8
+        show_state: false
+        show_name: false
+        aspect_ratio: 4x3
   - type: horizontal-stack
     cards:
       - type: tile
@@ -129,14 +173,25 @@ cards:
         name: Firmware
 ```
 
-> **Note:** The title card uses [mushroom-cards](https://github.com/piitaya/lovelace-mushroom). If you don't have mushroom installed, replace the `custom:mushroom-title-card` with a regular `markdown` card:
+> **Required custom cards (install via HACS → Frontend):**
+> - [mushroom-cards](https://github.com/piitaya/lovelace-mushroom) for the title card
+> - [swipe-card](https://github.com/bramkragten/swipe-card) for the image carousel
+>
+> **Fallback (no custom cards):** Replace `custom:mushroom-title-card` with a `markdown` card and `custom:swipe-card` with a single `picture-entity` pointing at `image.zeromouse_last_event`:
 > ```yaml
 > - type: markdown
 >   content: |
 >     ## ZeroMOUSE
 >     {{ states('sensor.zeromouse_last_event_classification') | title }}
 >     — {{ relative_time(states.sensor.zeromouse_last_event_time.state | as_datetime) }} ago
+> - type: picture-entity
+>   entity: image.zeromouse_last_event
+>   show_state: false
+>   show_name: false
+>   aspect_ratio: 4x3
 > ```
+>
+> Events have between 5-8 images. The carousel will show "unavailable" for missing slots — that's expected and won't break the layout.
 
 ## Mobile Notification with Image
 

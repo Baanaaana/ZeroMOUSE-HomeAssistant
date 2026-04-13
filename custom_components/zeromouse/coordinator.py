@@ -67,19 +67,28 @@ class ZeromouseEventCoordinator(DataUpdateCoordinator[dict | None]):
 
         ev = events[0]
 
-        # Build image URL from title image
-        image_url = ""
-        images = ev.get("Images") or {}
-        items = images.get("items") or []
-        if items:
-            title_idx = ev.get("titleImageIndex", 0) or 0
-            idx = title_idx if title_idx < len(items) else 0
-            file_path = items[idx]["filePath"]
-            image_url = self._client.get_image_url(file_path)
-            if image_url:
-                _LOGGER.debug("Event image URL generated for %s", file_path)
-            else:
-                _LOGGER.warning("Failed to generate image URL for %s (missing AWS credentials?)", file_path)
+        # Build URLs for all images (cap at 8, pad with empty strings)
+        items = (ev.get("Images") or {}).get("items") or []
+        image_urls: list[str] = []
+        for item in items[:8]:
+            image_urls.append(self._client.get_image_url(item["filePath"]))
+        while len(image_urls) < 8:
+            image_urls.append("")
+
+        # Title image (backward compat)
+        title_idx = ev.get("titleImageIndex", 0) or 0
+        if items and title_idx < len(items):
+            title_url = image_urls[title_idx]
+        elif items:
+            title_url = image_urls[0]
+        else:
+            title_url = ""
+
+        if items and not title_url:
+            _LOGGER.warning(
+                "Failed to generate image URL for event %s (missing AWS credentials?)",
+                ev["eventID"],
+            )
 
         return {
             "event_id": ev["eventID"],
@@ -88,6 +97,7 @@ class ZeromouseEventCoordinator(DataUpdateCoordinator[dict | None]):
             "time": datetime.fromtimestamp(
                 ev["eventTime"], tz=timezone.utc
             ).isoformat(),
-            "image_url": image_url,
+            "image_url": title_url,      # backward compat (title image)
+            "image_urls": image_urls,    # all 8 images (or "" for missing)
             "cat_cluster_id": ev.get("catClusterId"),
         }

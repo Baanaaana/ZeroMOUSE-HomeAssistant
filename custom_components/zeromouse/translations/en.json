@@ -53,7 +53,15 @@
       "ir_sensor_status": { "name": "IR sensor status" }
     },
     "image": {
-      "event_image": { "name": "Last event" }
+      "event_image": { "name": "Last event" },
+      "event_image_1": { "name": "Last event image 1" },
+      "event_image_2": { "name": "Last event image 2" },
+      "event_image_3": { "name": "Last event image 3" },
+      "event_image_4": { "name": "Last event image 4" },
+      "event_image_5": { "name": "Last event image 5" },
+      "event_image_6": { "name": "Last event image 6" },
+      "event_image_7": { "name": "Last event image 7" },
+      "event_image_8": { "name": "Last event image 8" }
     },
     "binary_sensor": {
       "flap_blocked": { "name": "Flap blocked" },

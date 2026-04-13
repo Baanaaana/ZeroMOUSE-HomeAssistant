@@ -16,19 +16,37 @@ from .entity import ZeromouseEntity
 
 _LOGGER = logging.getLogger(__name__)
 
+NUM_IMAGES = 8
+
 
 class ZeromouseEventImage(ZeromouseEntity, ImageEntity):
-    """Image entity showing the latest detection event photo."""
+    """Image entity showing a detection event photo.
 
-    _attr_translation_key = "event_image"
+    If `index` is None, this is the title image (backward compat).
+    Otherwise, it is the image at position `index` (0-7) in the event's image list.
+    """
 
-    def __init__(self, coordinator, device_id, device_name, session) -> None:
+    def __init__(
+        self,
+        coordinator,
+        device_id,
+        device_name,
+        session,
+        index: int | None = None,
+    ) -> None:
         ZeromouseEntity.__init__(self, coordinator, device_id, device_name)
         ImageEntity.__init__(self, coordinator.hass)
-        self._attr_unique_id = f"{device_id}_event_image"
         self._session = session
-        self._cached_event_id: str | None = None
+        self._index = index
+        self._cached_key: tuple[str, int | None] | None = None
         self._cached_image: bytes | None = None
+
+        if index is None:
+            self._attr_unique_id = f"{device_id}_event_image"
+            self._attr_translation_key = "event_image"
+        else:
+            self._attr_unique_id = f"{device_id}_event_image_{index + 1}"
+            self._attr_translation_key = f"event_image_{index + 1}"
 
     @property
     def image_last_updated(self) -> datetime | None:
@@ -40,35 +58,42 @@ class ZeromouseEventImage(ZeromouseEntity, ImageEntity):
                 return None
         return None
 
-    async def async_image(self) -> bytes | None:
-        """Fetch the event image bytes from S3 via pre-signed URL."""
+    def _get_url(self) -> str | None:
         data = self.coordinator.data
         if not data:
             return None
+        if self._index is None:
+            return data.get("image_url") or None
+        urls = data.get("image_urls") or []
+        if self._index < len(urls):
+            return urls[self._index] or None
+        return None
 
-        image_url = data.get("image_url")
-        event_id = data.get("event_id")
-
-        if not image_url:
-            _LOGGER.debug("No image URL available for event")
+    async def async_image(self) -> bytes | None:
+        """Fetch the event image bytes from S3 via pre-signed URL."""
+        url = self._get_url()
+        if not url:
             return None
 
-        # Return cached image if same event
-        if event_id and event_id == self._cached_event_id and self._cached_image:
+        data = self.coordinator.data or {}
+        event_id = data.get("event_id")
+        cache_key = (event_id, self._index)
+
+        # Return cached image if same event and index
+        if cache_key == self._cached_key and self._cached_image:
             return self._cached_image
 
         try:
-            _LOGGER.debug("Fetching event image from S3")
-            async with self._session.get(image_url, timeout=15) as resp:
+            _LOGGER.debug("Fetching event image %s from S3", self._index)
+            async with self._session.get(url, timeout=15) as resp:
                 if resp.status != 200:
                     _LOGGER.error(
-                        "Failed to fetch event image (HTTP %s): %s",
+                        "Failed to fetch event image (HTTP %s)",
                         resp.status,
-                        await resp.text()[:200] if resp.status != 200 else "",
                     )
                     return self._cached_image  # Return stale image on error
                 self._cached_image = await resp.read()
-                self._cached_event_id = event_id
+                self._cached_key = cache_key
                 return self._cached_image
         except Exception:
             _LOGGER.exception("Error fetching event image")
@@ -80,11 +105,21 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up ZeroMOUSE image entity from a config entry."""
+    """Set up ZeroMOUSE image entities from a config entry."""
     data = hass.data[DOMAIN][entry.entry_id]
     event_coord = data[DATA_EVENT_COORDINATOR]
     device_id = entry.data[CONF_DEVICE_ID]
     device_name = entry.data.get(CONF_DEVICE_NAME, "ZeroMOUSE")
     session = async_get_clientsession(hass)
 
-    async_add_entities([ZeromouseEventImage(event_coord, device_id, device_name, session)])
+    entities: list[ZeromouseEventImage] = [
+        # Title image (backward compat)
+        ZeromouseEventImage(event_coord, device_id, device_name, session, index=None),
+    ]
+    # 8 indexed images
+    for i in range(NUM_IMAGES):
+        entities.append(
+            ZeromouseEventImage(event_coord, device_id, device_name, session, index=i)
+        )
+
+    async_add_entities(entities)
