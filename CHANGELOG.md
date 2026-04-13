@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.3.0] - 2026-04-13
+
+### Added
+- **All 8 event images exposed as entities** — `image.zeromouse_event_image_1` through `image.zeromouse_event_image_8` alongside the existing title image
+- **Swipeable dashboard carousel** — new README example using `custom:swipe-card` to browse all event images
+- Improved Lovelace card with mushroom title, tile status indicators, and sectioned entity list
+
+### Changed
+- Coordinator now stores all image URLs per event (previously only the title image)
+- Image entities use per-entity cache keyed by `(event_id, index)` for efficient independent fetching
+
 ## [1.2.1] - 2026-04-11
 
 ### Changed
