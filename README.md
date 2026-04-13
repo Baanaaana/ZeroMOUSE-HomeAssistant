@@ -229,6 +229,7 @@ automation:
               'undecidable': 'Uncertain detection for ' ~ cat_name ~ ' — check the image.',
               'out': cat_name ~ ' went outside.',
               'late': 'Classification arrived too late — ' ~ cat_name ~ ' already through.',
+              'early': 'Classification arrived too early — ' ~ cat_name ~ ' already through.',
               'test': 'Test event triggered.',
             } %}
             {{ messages.get(classification, classification ~ ' event detected') }}

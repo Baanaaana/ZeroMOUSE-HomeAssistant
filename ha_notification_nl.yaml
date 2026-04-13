@@ -29,6 +29,7 @@ automation:
               'undecidable': 'Onzekere detectie voor ' ~ cat_name ~ ' — controleer de foto.',
               'out': cat_name ~ ' is naar buiten gegaan.',
               'late': 'Classificatie te laat — ' ~ cat_name ~ ' was al binnen.',
+              'early': 'Classificatie te vroeg — ' ~ cat_name ~ ' was al binnen.',
               'test': 'Testgebeurtenis uitgevoerd.',
             } %}
             {{ messages.get(classification, classification ~ ' gebeurtenis gedetecteerd') }}
